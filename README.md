@@ -4,6 +4,8 @@ API REST para gestão de finanças pessoais — categorias, transações e orça
 
 Projeto construído para aprender e demonstrar design de uma API do zero: autenticação (JWT), modelação de dados relacional, validação de input, isolamento de dados por utilizador e lógica de negócio além de CRUD simples (resumos agregados, estado de orçamento).
 
+**Em produção:** https://financas-api-production-8f73.up.railway.app ([`/health`](https://financas-api-production-8f73.up.railway.app/health), [`/docs`](https://financas-api-production-8f73.up.railway.app/docs))
+
 ## Stack
 
 - Node.js + Express
