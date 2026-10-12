@@ -11,6 +11,8 @@ Projeto construído para aprender e demonstrar design de uma API do zero: autent
 - JWT (jsonwebtoken) + bcrypt para autenticação
 - Zod para validação
 - Vitest + Supertest para testes
+- Swagger UI (OpenAPI) para documentação interativa
+- Docker Compose para Postgres local
 
 ## Modelo de dados
 
@@ -58,33 +60,49 @@ Ver [`prisma/schema.prisma`](./prisma/schema.prisma) para o esquema completo.
 
 Todas as rotas autenticadas esperam `Authorization: Bearer <token>`.
 
+Documentação interativa (Swagger UI) disponível em `GET /docs` com o servidor a correr — ver [`openapi.yaml`](./openapi.yaml) para a especificação completa.
+
 ## Setup local
 
-1. Copiar `.env.example` para `.env` e preencher `DATABASE_URL` (Postgres) e `JWT_SECRET`.
-2. Instalar dependências:
+1. Subir uma base de dados Postgres local:
+   ```
+   docker compose up -d
+   ```
+2. Copiar `.env.example` para `.env` (já vem pré-configurado para o Postgres do docker-compose).
+3. Instalar dependências:
    ```
    npm install
    ```
-3. Criar as tabelas na base de dados:
+4. Criar as tabelas na base de dados:
    ```
    npm run prisma:migrate
    ```
-4. Correr em modo dev:
+5. Correr em modo dev:
    ```
    npm run dev
    ```
 
-API disponível em `http://localhost:3000`. Endpoint de verificação: `GET /health`.
+API disponível em `http://localhost:3001`. Endpoint de verificação: `GET /health`. Documentação: `GET /docs`.
 
 ## Testes
 
-```
-npm test
-```
+Os testes de integração correm contra uma base de dados Postgres real e separada (`financas_api_test`), limpa antes de cada teste.
+
+1. Criar a base de dados de teste (uma vez):
+   ```
+   docker compose exec db psql -U financas -d postgres -c "CREATE DATABASE financas_api_test;"
+   ```
+2. Aplicar as migrações a essa base de dados:
+   ```
+   npm run prisma:migrate:test
+   ```
+3. Correr os testes:
+   ```
+   npm test
+   ```
 
 ## Próximos passos
 
-- Documentação OpenAPI/Swagger
 - Refresh tokens
 - Rate limiting
 - Deploy (Railway/Render) + CI no GitHub Actions
